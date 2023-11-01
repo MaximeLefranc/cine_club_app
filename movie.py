@@ -1,6 +1,13 @@
 from dataclasses import dataclass
 import json
 from pathlib import Path
+import logging
+
+logging.basicConfig(
+    filename=Path.cwd() / 'movies.log',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 MOVIES_DB = Path.cwd() / 'data' / 'movies.json'
 
@@ -20,7 +27,7 @@ class Movie:
             with open(MOVIES_DB, 'r') as f:
                 content = json.load(f)
         except json.decoder.JSONDecodeError:
-            print('Il n\'y a pas de films dans la base de donnée.')
+            logging.info('La base de donnée ne contient pas de film.')
         else:
             return content
 
