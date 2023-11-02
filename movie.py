@@ -24,7 +24,7 @@ class Movie:
         return self.title
 
     @staticmethod
-    def get_movies() -> list[Movie] | list[None]:
+    def get_movies() -> list[Movie] | list:
         try:
             with open(MOVIES_DB, 'r') as f:
                 content = json.load(f)

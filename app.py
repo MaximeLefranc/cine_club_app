@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 
 from movie import Movie
 
@@ -9,6 +9,7 @@ class App(QtWidgets.QWidget):
         self.setWindowTitle('Ciné Club')
         self.setup_ui()
         self.setup_css()
+        self.populate_movies()
 
     def setup_ui(self):
         self.main_layout = QtWidgets.QVBoxLayout(self)  # type: ignore
@@ -29,6 +30,13 @@ class App(QtWidgets.QWidget):
         self.list_movies.setStyleSheet("""
             height: 100
         """)
+
+    def populate_movies(self):
+        movies = Movie.get_movies()
+        for movie in movies:
+            lw_item = QtWidgets.QListWidgetItem(movie.title)
+            lw_item.setData(QtCore.Qt.ItemDataRole.UserRole, movie)
+            self.list_movies.addItem(lw_item)
 
 
 app = QtWidgets.QApplication([])
