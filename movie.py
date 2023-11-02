@@ -37,6 +37,16 @@ class Movie:
         with open(MOVIES_DB, 'w') as f:
             json.dump(movies, f, indent=4)
 
+    def add_to_movies(self) -> bool:
+        movies = self._get_movies()
+        if self.title in movies:
+            logging.warning(f'Le film {self.title} est déjà présent dans la base de données')
+            return False
+        else:
+            movies.append(self.title)
+            self._write_movies(movies)
+            return True
+
 
 if __name__ == '__main__':
     movie = Movie('harry potter')
@@ -44,4 +54,4 @@ if __name__ == '__main__':
     # print(movie)
     # print(MOVIES_DB)
     # print(movie._write_movies(["Harry Potter", "Barry Lyndon"]))
-    print(movie._get_movies())
+    movie.add_to_movies()
