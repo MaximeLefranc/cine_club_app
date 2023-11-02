@@ -42,10 +42,20 @@ class Movie:
         if self.title in movies:
             logging.warning(f'Le film {self.title} est déjà présent dans la base de données')
             return False
-        else:
-            movies.append(self.title)
-            self._write_movies(movies)
-            return True
+
+        movies.append(self.title)
+        self._write_movies(movies)
+        return True
+
+    def remove_from_movies(self) -> bool:
+        movies = self._get_movies()
+        if self.title not in movies:
+            logging.warning(f'Le film {self.title} n\'est pas présent dans la base de données -> suppression annulé')
+            return False
+
+        movies.remove(self.title)
+        self._write_movies(movies)
+        return True
 
 
 if __name__ == '__main__':
@@ -54,4 +64,4 @@ if __name__ == '__main__':
     # print(movie)
     # print(MOVIES_DB)
     # print(movie._write_movies(["Harry Potter", "Barry Lyndon"]))
-    movie.add_to_movies()
+    movie.remove_from_movies()
