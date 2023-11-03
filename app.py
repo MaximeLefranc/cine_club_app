@@ -9,6 +9,7 @@ class App(QtWidgets.QWidget):
         self.setWindowTitle('Ciné Club')
         self.setup_ui()
         self.setup_css()
+        self.setup_connections()
         self.populate_movies()
 
     def setup_ui(self):
@@ -32,11 +33,30 @@ class App(QtWidgets.QWidget):
         """)
 
     def populate_movies(self):
+        self.list_movies.clear()
         movies = Movie.get_movies()
         for movie in movies:
             lw_item = QtWidgets.QListWidgetItem(movie.title)
             lw_item.setData(QtCore.Qt.ItemDataRole.UserRole, movie)
             self.list_movies.addItem(lw_item)
+
+    def setup_connections(self):
+        self.le_movieTitle.returnPressed.connect(self.add_movie)
+        self.btn_add.clicked.connect(self.add_movie)
+        self.btn_remove.clicked.connect(self.remove_movie)
+
+    def add_movie(self):
+        title_movie = self.le_movieTitle.text()
+        if not title_movie:
+            return False
+        new_movie = Movie(title_movie)
+        if new_movie.add_to_movies():
+            self.populate_movies()
+            self.le_movieTitle.clear()
+
+    def remove_movie(self):
+        print('J\'ai cliqué sur remove')
+        pass
 
 
 app = QtWidgets.QApplication([])
